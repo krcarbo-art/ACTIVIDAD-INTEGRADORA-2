@@ -4,3 +4,11 @@
     --color-texto: #243746;
     --color-hover: #e89b25;
     --color-blanco: #ffffff; }
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+header h1 {
+    color: var(--color-principal);
+    text-align: center;
+}
