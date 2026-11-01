@@ -1,3 +1,6 @@
-.title {
-    color: green;
-}
+:root {
+    --color-principal: #7952b3;
+    --color-fondo: #f3eafb;
+    --color-texto: #243746;
+    --color-hover: #e89b25;
+    --color-blanco: #ffffff; }
