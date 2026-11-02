@@ -15,7 +15,9 @@ tareas = tareas.map(function (tarea, indice) {
     };
 });
 
-guardarTareas(tareas);
+if (localStorage.getItem("tareas") !== null) {
+    guardarTareas(tareas);
+}
 
 // Actualizar estadísticas
 function actualizarEstadisticas() {
