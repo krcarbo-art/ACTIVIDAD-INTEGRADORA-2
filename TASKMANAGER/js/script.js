@@ -4,9 +4,13 @@ import { guardarTareas, obtenerTareas } from "./storage.js";
 console.log("TaskManager iniciado correctamente");
 let tareas = obtenerTareas();
 tareas.forEach(function (tarea) {
-    mostrarTarea(tarea.titulo, tarea.completada);
+    mostrarTarea(tarea.titulo, tarea.completada, function (estado) {
+        tarea.completada = estado;
+        guardarTareas(tareas);
+    });
 });
 const formulario = document.getElementById("form-tarea");
+
 console.log("Formulario encontrado:", formulario);
 
 formulario.addEventListener("submit", function (evento) {

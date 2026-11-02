@@ -1,9 +1,11 @@
-export function mostrarTarea(titulo, completada = false) {
+export function mostrarTarea(titulo, completada = false, alCambiar = null) {
     const lista = document.getElementById("lista-tareas");
 
     const elemento = document.createElement("li");
     const casilla = document.createElement("input");
     casilla.type = "checkbox";
+    casilla.checked = completada;
+    elemento.style.textDecoration = completada ? "line-through" : "none";
     const botonEliminar = document.createElement("button");
     botonEliminar.textContent = "Eliminar";
     // Crear botón para editar tareas
@@ -33,6 +35,10 @@ export function mostrarTarea(titulo, completada = false) {
     // Marcar la tarea como completada
     casilla.addEventListener("change", function () {
         elemento.style.textDecoration = casilla.checked ? "line-through" : "none";
+
+        if (alCambiar) {
+            alCambiar(casilla.checked);
+        }
     });
 
 
