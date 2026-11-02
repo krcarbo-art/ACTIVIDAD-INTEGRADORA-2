@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="CSS/styles.css" />
 
     <script type="module" src="js/script.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("./sw.js")
+                    .then(function () {
+                        console.log("Modo offline activado");
+                    })
+                    .catch(function (error) {
+                        console.error("Error al activar modo offline:", error);
+                    });
+            });
+        }
+    </script>
 </head>
 
 <body>
