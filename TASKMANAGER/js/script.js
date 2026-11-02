@@ -1,7 +1,7 @@
 
 import { mostrarTarea } from "./dom.js";
 import { guardarTareas, obtenerTareas } from "./storage.js";
-
+import { obtenerTareasAPI } from "./api.js";
 // Recuperar tareas guardadas
 let tareas = obtenerTareas();
 
