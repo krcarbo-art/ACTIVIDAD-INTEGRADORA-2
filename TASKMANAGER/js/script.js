@@ -119,6 +119,37 @@ function actualizarLista() {
 // Mostrar las tareas guardadas
 actualizarLista();
 
+// Cargar tareas desde internet si no hay datos guardados
+async function cargarTareasIniciales() {
+    if (localStorage.getItem("tareas") !== null) {
+        return;
+    }
+
+    try {
+        const tareasAPI = await obtenerTareasAPI();
+
+        // Evitar reemplazar tareas creadas durante la descarga
+        if (localStorage.getItem("tareas") !== null) {
+            return;
+        }
+
+        tareas = tareasAPI;
+        guardarTareas(tareas);
+        actualizarLista();
+
+    } catch (error) {
+        console.error("Error al cargar tareas:", error);
+
+        const aviso = document.createElement("p");
+        aviso.textContent = error.message;
+
+        document.querySelector("main").prepend(aviso);
+    }
+}
+
+cargarTareasIniciales();
+
+
 // Agregar una nueva tarea
 const formulario = document.getElementById("form-tarea");
 
