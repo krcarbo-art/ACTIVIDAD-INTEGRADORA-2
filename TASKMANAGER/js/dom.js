@@ -1,4 +1,4 @@
-export function mostrarTarea(titulo) {
+export function mostrarTarea(titulo, completada = false) {
     const lista = document.getElementById("lista-tareas");
 
     const elemento = document.createElement("li");
