@@ -31,10 +31,34 @@
             <option value="completadas">Completadas</option>
         </select>
 
+        <!-- Ordenar tareas -->
+        <label for="orden-tareas">Ordenar por:</label>
+        <select id="orden-tareas">
+            <option value="recientes">Más recientes</option>
+            <option value="antiguas">Más antiguas</option>
+            <option value="prioridad">Prioridad</option>
+        </select>
+
+        <!-- Estadísticas -->
+        <section id="estadisticas">
+            <h3>Resumen de tareas</h3>
+            <p>Total: <strong id="total-tareas">0</strong></p>
+            <p>Pendientes: <strong id="tareas-pendientes">0</strong></p>
+            <p>Completadas: <strong id="tareas-completadas">0</strong></p>
+        </section>
+
         <!-- Formulario para agregar tareas -->
         <form id="form-tarea">
             <label for="titulo-tarea">Nombre de la tarea:</label>
-            <input type="text" id="titulo-tarea" placeholder="Escribe una nueva tarea">
+            <input type="text" id="titulo-tarea" placeholder="Escribe una nueva tarea" required>
+
+            <!-- Prioridad de la tarea -->
+            <label for="prioridad-tarea">Prioridad:</label>
+            <select id="prioridad-tarea">
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
+                <option value="baja">Baja</option>
+            </select>
 
             <button type="submit">Agregar tarea</button>
         </form>

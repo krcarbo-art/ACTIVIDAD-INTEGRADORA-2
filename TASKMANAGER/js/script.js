@@ -2,22 +2,48 @@
 import { mostrarTarea } from "./dom.js";
 import { guardarTareas, obtenerTareas } from "./storage.js";
 
-// Recuperar las tareas guardadas
+// Recuperar tareas guardadas
 let tareas = obtenerTareas();
 
-// Actualizar las tareas en pantalla
+// Adaptar las tareas antiguas sin perder información
+tareas = tareas.map(function (tarea, indice) {
+    return {
+        ...tarea,
+        prioridad: tarea.prioridad || "media",
+        fechaCreacion: tarea.fechaCreacion ||
+            new Date(indice).toISOString()
+    };
+});
+
+guardarTareas(tareas);
+
+// Actualizar estadísticas
+function actualizarEstadisticas() {
+    const total = tareas.length;
+
+    const completadas = tareas.filter(function (tarea) {
+        return tarea.completada;
+    }).length;
+
+    const pendientes = total - completadas;
+
+    document.getElementById("total-tareas").textContent = total;
+    document.getElementById("tareas-pendientes").textContent = pendientes;
+    document.getElementById("tareas-completadas").textContent = completadas;
+}
+
+// Actualizar la lista
 function actualizarLista() {
     const lista = document.getElementById("lista-tareas");
     lista.innerHTML = "";
 
-    // Obtener texto de búsqueda
     const busqueda = document.getElementById("buscar-tarea")
-        .value.toLowerCase();
+        .value.trim().toLowerCase();
 
-    // Obtener filtro seleccionado
     const filtroEstado = document.getElementById("filtro-estado").value;
+    const orden = document.getElementById("orden-tareas").value;
 
-    // Filtrar tareas por nombre y estado
+    // Buscar y filtrar
     const tareasFiltradas = tareas.filter(function (tarea) {
         const coincideBusqueda = tarea.titulo
             .toLowerCase()
@@ -31,7 +57,29 @@ function actualizarLista() {
         return coincideBusqueda && coincideEstado;
     });
 
-    // Mostrar las tareas filtradas
+    // Ordenar por fecha o prioridad
+    const prioridades = {
+        alta: 3,
+        media: 2,
+        baja: 1
+    };
+
+    tareasFiltradas.sort(function (a, b) {
+        if (orden === "prioridad") {
+            return prioridades[b.prioridad] - prioridades[a.prioridad];
+        }
+
+        const fechaA = new Date(a.fechaCreacion).getTime();
+        const fechaB = new Date(b.fechaCreacion).getTime();
+
+        if (orden === "antiguas") {
+            return fechaA - fechaB;
+        }
+
+        return fechaB - fechaA;
+    });
+
+    // Mostrar tareas
     tareasFiltradas.forEach(function (tarea) {
         mostrarTarea(
             tarea.titulo,
@@ -62,6 +110,8 @@ function actualizarLista() {
             }
         );
     });
+
+    actualizarEstadisticas();
 }
 
 // Mostrar las tareas guardadas
@@ -76,19 +126,20 @@ formulario.addEventListener("submit", function (evento) {
     const titulo = document.getElementById("titulo-tarea")
         .value.trim();
 
-    // Validar que no esté vacío
+    const prioridad = document.getElementById("prioridad-tarea").value;
+
     if (titulo === "") {
         alert("Por favor, escribe el nombre de la tarea.");
         return;
     }
 
-    // Crear tarea nueva
     tareas.push({
         titulo: titulo,
-        completada: false
+        completada: false,
+        prioridad: prioridad,
+        fechaCreacion: new Date().toISOString()
     });
 
-    // Guardar y actualizar
     guardarTareas(tareas);
     formulario.reset();
     actualizarLista();
@@ -96,12 +147,12 @@ formulario.addEventListener("submit", function (evento) {
 
 // Buscar tareas mientras se escribe
 document.getElementById("buscar-tarea")
-    .addEventListener("input", function () {
-        actualizarLista();
-    });
+    .addEventListener("input", actualizarLista);
 
 // Filtrar tareas por estado
 document.getElementById("filtro-estado")
-    .addEventListener("change", function () {
-        actualizarLista();
-    });
+    .addEventListener("change", actualizarLista);
+
+// Ordenar tareas
+document.getElementById("orden-tareas")
+    .addEventListener("change", actualizarLista);
