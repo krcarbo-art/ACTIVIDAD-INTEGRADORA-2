@@ -12,3 +12,6 @@ header h1 {
     color: var(--color-principal);
     text-align: center;
 }
+header p {
+    text-align: center;
+}
